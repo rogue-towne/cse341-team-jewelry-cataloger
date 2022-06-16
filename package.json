@@ -1,0 +1,39 @@
+{
+  "name": "cse341-team-jewelry-cataloger",
+  "version": "1.0.0",
+  "description": "CSE341 team project",
+  "main": "server.js",
+  "scripts": {
+    "test": "start",
+    "start": "nodemon server.js",
+    "swagger": "node ./swagger.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarrinFry/CSE341TEAM.git"
+  },
+  "author": "Chris Folwer, Darrin Fry, Nate Gregory, Tsukasa Muto, Rose Towne",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DarrinFry/CSE341TEAM/issues"
+  },
+  "homepage": "https://github.com/DarrinFry/CSE341TEAM#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-openid-connect": "^2.7.2",
+    "mongodb": "^4.7.0",
+    "mongoose": "^6.3.8",
+    "mongosh": "^0.0.1",
+    "swagger-jsdoc": "^6.2.1",
+    "validatorjs": "^3.22.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.17.0",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.7.0",
+    "swagger-autogen": "^2.21.3",
+    "swagger-ui-express": "^4.4.0"
+  }
+}

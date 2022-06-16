@@ -1,0 +1,12 @@
+[
+    {
+        "entry_date": "1/1/1111",
+        "metal_name": "gold",
+        "metal_karatage": 0.750,
+        "metal_price": 1234.56,
+        "diamond_price_per_carat": 1234.56,
+        "gemstone_price_per_carat": 1234.56,
+        "labor_total": 1234.56,
+        "retail_modifier": 2.5        
+    }
+]

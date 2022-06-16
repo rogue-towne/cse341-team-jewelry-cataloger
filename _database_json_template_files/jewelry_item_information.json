@@ -1,0 +1,22 @@
+[
+    {
+        "finger_size": 6.5,
+        "metal_weight_grams": 5.5,
+        "number_of_stones_1": 100,
+        "number_of_stones_2": 100,
+        "number_of_stones_3": 100,
+        "cttw_stones_1": 0.5,
+        "cttw_stones_2": 0.5,
+        "cttw_stones_3": 0.5,
+        "price_stones_1": 1234.56,
+        "price_stones_2": 1234.56,
+        "price_stones_3": 1234.56,
+        "labor_1": 500,
+        "labor_2": 500,
+        "labor_3": 500,
+        "item_condition": "Like New",
+        "appraisal_note": "Stuff that an appraiser might say about the item",
+        "item_description": "Long description of the jewelry item"
+
+    }
+]
