@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
 
+//The typescript definition for this schema:
 export interface UserDocument extends mongoose.Document{
     first_name: string,
     last_name: string,
