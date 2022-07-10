@@ -1,9 +1,9 @@
 import express, { Request, Response} from 'express'
-import userController from '../controllers/user_data'
+import router from './user'
 const routes = express.Router();
 
 //routes.use('/', require('./home'));
-routes.use('/user', require('./user'));
+routes.use('/user', router);
 
 
 //Landing page for guests

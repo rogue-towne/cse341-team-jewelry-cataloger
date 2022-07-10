@@ -1,6 +1,9 @@
-const routes = require('express').Router();
-import userController from '../controllers/user_data';
+import express, {Request, Response} from 'express'
+const router = express.Router();
+import { postNewUserHandler } from '../controllers/user_controller';
+import validate from '../helper/validate';
+import { postNewUserSchema } from '../schema/user_schema';
 
-routes.get('/', userController.getAll);
+router.post('/user', validate(postNewUserSchema), postNewUserHandler);
 
-export default routes;
+export default router;
