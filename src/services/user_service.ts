@@ -8,12 +8,7 @@ export async function getSingle(query: FilterQuery<UserDocument>, options: Query
     return UserDataModel.findOne(query, {}, options)
 }
 export async function postNewUser(input: DocumentDefinition<UserDocument>){
-    try {
-        return await UserDataModel.create(input);
-    } catch (err: any) {
-        throw new Error(err);
-    }
-    
+    return UserDataModel.create(input);
 }
 export async function putUpdateUser(query: FilterQuery<UserDocument>, update: UpdateQuery<UserDocument>, options: QueryOptions){
     return UserDataModel.findOneAndUpdate(query, update, options)

@@ -4,8 +4,14 @@ import { deleteUser, getAll, getSingle, postNewUser, putUpdateUser } from '../se
 
 
 export async function getAllHandler(req: Request, res: Response){
-    const users = await getAll();
-
+    try {
+        const users = await getAll();
+        return res.send(users)
+    } catch (err: any) {
+        res.status(401).json({message: err.message})
+        res.status(503).json({message: err.message})
+        res.status(400).json({message: err.message}) 
+    }
 }
 export async function getSingleHandler(req: Request<GetSingleUserInput['params']>, res: Response){
     const userId = req.params.userId;
@@ -14,7 +20,6 @@ export async function getSingleHandler(req: Request<GetSingleUserInput['params']
         return res.sendStatus(404)
     }
     return res.send(user)
-
 }
 export async function postNewUserHandler(req: Request<{}, {}, PostNewUserInput['body']>, res: Response){
     try {
