@@ -1,8 +1,8 @@
 import { DocumentDefinition, FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 import UserDataModel, { UserDocument } from "../models/user_model";
 
-export async function getAll(query: FilterQuery<UserDocument>){
-    return UserDataModel.find(query)
+export async function getAll(){
+    return UserDataModel.find();
 }
 export async function getSingle(query: FilterQuery<UserDocument>, options: QueryOptions = {lean: true}){
     return UserDataModel.findOne(query, {}, options)

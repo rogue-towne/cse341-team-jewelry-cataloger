@@ -1,15 +1,22 @@
 import {Request, Response} from 'express'
-import { PostNewUserInput } from '../schema/user_schema';
-import { postNewUser } from '../services/user_service'
+import { GetSingleUserInput, PostNewUserInput, PutUpdateUserInput } from '../schema/user_schema';
+import { deleteUser, getAll, getSingle, postNewUser, putUpdateUser } from '../services/user_service'
 
 
 export async function getAllHandler(req: Request, res: Response){
+    const users = await getAll();
 
 }
-export async function getSingleHandler(req: Request, res: Response){
-    
+export async function getSingleHandler(req: Request<GetSingleUserInput['params']>, res: Response){
+    const userId = req.params.userId;
+    const user = await getSingle({userId})
+    if (!user){
+        return res.sendStatus(404)
+    }
+    return res.send(user)
+
 }
-export async function postNewUserHandler(req: Request<{}, {}, PostNewUserInput["body"]>, res: Response){
+export async function postNewUserHandler(req: Request<{}, {}, PostNewUserInput['body']>, res: Response){
     try {
         const user = await postNewUser(req.body);
         return res.send(user)
@@ -19,11 +26,24 @@ export async function postNewUserHandler(req: Request<{}, {}, PostNewUserInput["
         res.status(400).json({message: err.message})
     }
 }
-export async function putUpdateUserHandler(req: Request, res: Response){
-    
+export async function putUpdateUserHandler(req: Request<PutUpdateUserInput['params']>, res: Response){
+    const userId = req.params.userId;
+    const user = await getSingle({userId})
+    if (!user){
+        return res.sendStatus(404)
+    }
+    const update = req.body
+    const updatedUser = await putUpdateUser({userId}, update, {new: true})
+    return res.send(updatedUser)
 }
-export async function deleteUserHandler(req: Request, res: Response){
-    
+export async function deleteUserHandler(req: Request<PutUpdateUserInput['params']>, res: Response){
+    const userId = req.params.userId;
+    const user = await getSingle({userId})
+    if (!user){
+        return res.sendStatus(404)
+    }
+    await deleteUser({userId});
+    return res.sendStatus(200)
 }
 // const getAll = async (req: Request, res: Response, next: NextFunction) => {
 // 	/*

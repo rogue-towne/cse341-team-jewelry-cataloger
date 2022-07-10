@@ -32,7 +32,8 @@ const User_Data_Schema = new mongoose.Schema({
 	},
 	phone_number: {
 		type: String,
-		required: true
+		required: true,
+		match: /^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/
 	},
 	street_address: {
 		type: String,
@@ -50,7 +51,7 @@ const User_Data_Schema = new mongoose.Schema({
 		type: String,
 		required: false
 	}
-})
+}, {collection : 'User_Data'})
 
 const UserDataModel = mongoose.model<UserDocument>('user_data', User_Data_Schema);
 export default UserDataModel;

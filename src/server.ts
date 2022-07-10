@@ -1,5 +1,5 @@
-import express, {Application, NextFunction, Request, Response} from 'express'
-
+import express, {Application} from 'express'
+import bodyParser from 'body-parser'
 import routes from './routes/index'
 import dotenv from 'dotenv'
 import connectDB from './db/connect'
@@ -23,7 +23,21 @@ app.use(express.static('public'));
 
 // App
 app
-    .use(express.json())
+    .use(bodyParser.json())
+    .use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader(
+            'Access-Control-Allow-Headers',
+            'Origin, E-Requested-With, Content-Type, Accept, Z-Key'
+        );
+        // Need to comment out below to make ejs template work
+        // res.setHeader('Content-Type', 'application/json');
+        res.setHeader(
+            'Access-Control-Allow-Methods',
+            'GET, POST, PUT, DELETE, OPTIONS'
+        );
+        next();
+    })
     .use('/', routes)
 
 
