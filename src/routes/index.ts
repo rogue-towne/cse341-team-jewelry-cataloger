@@ -1,9 +1,11 @@
 import express, { Request, Response} from 'express'
-import router from './user'
+import userRouter from './user'
+import insuranceRouter from './insurance'
 const routes = express.Router();
 
 //routes.use('/', require('./home'));
-routes.use('/user', router);
+routes.use('/user', userRouter);
+routes.use('/insurance', insuranceRouter);
 
 
 //Landing page for guests

@@ -1,4 +1,3 @@
-import { TypeKeyBaseType } from 'mongoose'
 import {object, string, TypeOf} from 'zod'
 
 const payload = {
@@ -47,8 +46,6 @@ export const deleteUserSchema = object({
 export const getSingleSchema = object({
     ...params
 })
-
-
 
 //Export the interface for the user input
 export type PostNewUserInput = TypeOf<typeof postNewUserSchema>;
