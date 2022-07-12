@@ -9,6 +9,10 @@
     {
         "url": "http://localhost:8080",
         "description": "Development server"
+    },
+    {
+      "url": "https://cse-341-team-jewelry-cataloger.herokuapp.com",
+      "description": "Host server"
     }
   ],
   "tags": [
