@@ -4,19 +4,33 @@ import routes from './routes/index'
 import dotenv from 'dotenv'
 import connectDB from './db/connect'
 import path from 'path'
+import { auth, requiresAuth } from 'express-openid-connect'
 import swaggerJSON from './swagger.json'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJSDoc from 'swagger-jsdoc'
-import passport from 'passport'
-import session from 'express-session'
-import MongoStore from 'connect-mongo'
-const swaggerDefinition = swaggerJSON;
 
-// Passport config
-require('./config/passport')(passport);
 
 dotenv.config();
+
 const app: Application = express();
+const swaggerDefinition = swaggerJSON;
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: process.env.SECRET,
+  baseURL: process.env.BASE_URL,
+  clientID: process.env.CLIENT_ID,
+  issuerBaseURL: process.env.ISSUER_BASE_URL
+};
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config))
+
+const options = {
+  // Paths to files containing OpenAPI definitions
+  apis: ['./routes/*.ts'],
+  swaggerDefinition
+};
 
 const port = process.env.PORT || 8080;
 app.listen(port, async () =>{
@@ -24,35 +38,18 @@ app.listen(port, async () =>{
     await connectDB();
 });
 
-// Sessions
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_DB_URI }),
-    cookie: { maxAge: 1 * 24 * 60 * 60 * 1000 }
-}));
-
-// Passport middleware
-app
-  .use(passport.initialize())
-  .use(passport.session());
-
-
 // EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 
-const options = {
-    // Paths to files containing OpenAPI definitions
-    apis: ['./routes/*.ts'],
-    swaggerDefinition
-};
+
 
 // App
 app
     .use(bodyParser.json())
+    
+    
     // .use((req, res, next) => {
     //     res.setHeader('Access-Control-Allow-Origin', '*');
     //     res.setHeader(
@@ -68,6 +65,18 @@ app
     //     next();
     // })
     .use('/', routes)
-    .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(options)))
+    .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(options)));
+
+    // req.isAuthenticated is provided from the auth router
+app.get('/', (req, res) => {
+  if (req.oidc.isAuthenticated()) {
+    res.redirect('http://localhost:8080/api-docs')
+  } else {
+    res.render('index', {
+      title: 'Welcome to Jewelry Cataloger'
+    });
+  }
+});
+
   
 

@@ -3,7 +3,7 @@
 "info": {
     "title": "CSE341 Team Project -- Jewelery Cataloger",
     "version": "1.0.0",
-    "description": "A program for cataloging jewelry items for insurance purposes ---- <button><a href='https://cse-341-team-jewelry-cataloger.herokuapp.com/logout'>LOGOUT</a></button> ---- "
+    "description": "A program for cataloging jewelry items for insurance purposes ---- <button><a href='http://localhost:8080/logout'>LOGOUT</a></button> ---- "
   },
   "servers": [
     {
