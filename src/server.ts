@@ -9,7 +9,6 @@ import swaggerJSON from './swagger.json'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJSDoc from 'swagger-jsdoc'
 
-
 dotenv.config();
 
 const app: Application = express();
@@ -23,6 +22,7 @@ const config = {
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL
 };
+
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config))
 
@@ -43,31 +43,25 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 
-
-
 // App
 app
     .use(bodyParser.json())
-    
-    
-    // .use((req, res, next) => {
-    //     res.setHeader('Access-Control-Allow-Origin', '*');
-    //     res.setHeader(
-    //         'Access-Control-Allow-Headers',
-    //         'Origin, E-Requested-With, Content-Type, Accept, Z-Key'
-    //     );
-    //     // Need to comment out below to make ejs template work
-    //     // res.setHeader('Content-Type', 'application/json');
-    //     res.setHeader(
-    //         'Access-Control-Allow-Methods',
-    //         'GET, POST, PUT, DELETE, OPTIONS'
-    //     );
-    //     next();
-    // })
+    .use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader(
+            'Access-Control-Allow-Headers',
+            'Origin, E-Requested-With, Content-Type, Accept, Z-Key'
+        );
+        res.setHeader(
+            'Access-Control-Allow-Methods',
+            'GET, POST, PUT, DELETE, OPTIONS'
+        );
+        next();
+    })
     .use('/', routes)
     .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(options)));
 
-    // req.isAuthenticated is provided from the auth router
+// req.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
   if (req.oidc.isAuthenticated()) {
     res.redirect('http://localhost:8080/api-docs')

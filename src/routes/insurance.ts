@@ -6,9 +6,9 @@ import validate from '../helper/validate';
 import { deleteInsuranceSchema, getSingleSchema, postNewInsuranceSchema, putUpdateInsuranceSchema } from '../schema/insurance_schema';
 
 router.post('/',  requiresAuth(), validate(postNewInsuranceSchema), postNewInsuranceHandler);
-router.delete('/:insuranceId', validate(deleteInsuranceSchema), deleteInsuranceHandler);
-router.get('/:insuranceId', validate(getSingleSchema), getSingleHandler);
-router.get('/', getAllHandler);
-router.put('/:insuranceId', validate(putUpdateInsuranceSchema), putUpdateInsuranceHandler);
+router.delete('/:insuranceId', requiresAuth(), validate(deleteInsuranceSchema), deleteInsuranceHandler);
+router.get('/:insuranceId', requiresAuth(), validate(getSingleSchema), getSingleHandler);
+router.get('/', requiresAuth(), getAllHandler);
+router.put('/:insuranceId', requiresAuth(), validate(putUpdateInsuranceSchema), putUpdateInsuranceHandler);
 
 export default router;
