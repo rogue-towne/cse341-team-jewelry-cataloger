@@ -48,7 +48,7 @@ const Market_Schema = new mongoose.Schema({
       type: Number,
       required: false,
     },
-  }, {collection : 'Market_Data'});
+  }, {collection : 'market_datas'});
 
   const MarketModel = mongoose.model<MarketDocument>('Market_data', Market_Schema);
 export default MarketModel;

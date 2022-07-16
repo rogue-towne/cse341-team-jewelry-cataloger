@@ -90,7 +90,7 @@ const Jewelry_Schema = new mongoose.Schema({
         type: String,
         required: false
     }
-}, {collection : 'Jewelry_Data'})
+}, {collection : 'jewelry_item_informations'})
 
     
 const JewelryModel = mongoose.model<JewelryDocument>('jewelry_data', Jewelry_Schema);
