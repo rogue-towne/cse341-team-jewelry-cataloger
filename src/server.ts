@@ -4,7 +4,7 @@ import routes from './routes/index'
 import dotenv from 'dotenv'
 import connectDB from './db/connect'
 import path from 'path'
-import { auth, requiresAuth } from 'express-openid-connect'
+import {auth} from 'express-openid-connect'
 import swaggerJSON from './swagger.json'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJSDoc from 'swagger-jsdoc'
@@ -76,6 +76,10 @@ app.get('/', (req, res) => {
       title: 'Welcome to Jewelry Cataloger'
     });
   }
+});
+
+process.on('uncaughtException', (err, origin) => {
+  console.log(process.stderr.fd, `Caught exception: ${err}\n` + `Exception origin: ${origin}`);
 });
 
   

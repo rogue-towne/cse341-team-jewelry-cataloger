@@ -5,9 +5,7 @@ const payload = {
         insurance_company: string({
             required_error: "Insurance company is required"
         }),
-        insurance_agent: string({
-            required_error: "Insurance agent is required"
-        }),
+        insurance_agent: string(),
         insurance_policy: string({
             required_error: "Insurance policy is required"
         })

@@ -8,9 +8,7 @@ export async function getAllHandler(req: Request, res: Response){
         const users = await getAll();
         return res.status(200).json(users)
     } catch (err: any) {
-        res.status(401).json({message: err.message})
         res.status(503).json({message: err.message})
-        res.status(400).json({message: err.message}) 
     }
 }
 export async function getSingleHandler(req: Request<GetSingleUserInput['params']>, res: Response){

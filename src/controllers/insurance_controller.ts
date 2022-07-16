@@ -1,37 +1,38 @@
 import {Request, Response} from 'express'
-import { GetSingleInsuranceInput, PostNewInsuranceInput, PutUpdateInsuranceInput } from '../schema/insurance_schema';
-import { deleteInsurance, getAll, getSingle, postNewInsurance, putUpdateInsurance } from '../services/insurance_service';
+import UserInsuranceModel from '../models/insurance_model';
+import { DeleteInsuranceInput, GetSingleInsuranceInput, PostNewInsuranceInput, PutUpdateInsuranceInput } from '../schema/insurance_schema';
 
 export async function postNewInsuranceHandler(req: Request<{}, {}, PostNewInsuranceInput['body']>, res: Response){
     try {
-        const insurance = await postNewInsurance(req.body);
-        return res.status(200).json(insurance)
+        const insurance = await UserInsuranceModel.create(req.body);
+        return res.status(201).json(insurance)
     } catch (err: any) {
         res.status(401).json({message: err.message})
         res.status(503).json({message: err.message})
         res.status(400).json({message: err.message})
     }
 }
-export async function deleteInsuranceHandler(req: Request<PutUpdateInsuranceInput['params']>, res: Response){
-    const insuranceId = req.params.insuranceId;
-    const insurance = await getSingle({insuranceId})
-    if (!insurance){
-        return res.sendStatus(404)
-    }
-    await deleteInsurance({insuranceId});
-    return res.sendStatus(200)
+export async function deleteInsuranceHandler(req: Request<DeleteInsuranceInput['params']>, res: Response){
+    try { 
+        const insurance = await UserInsuranceModel.findById(req.params.insuranceId)
+        insurance?.deleteOne()
+        res.json('Deleted Insurance')
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
+    };
 }
 export async function getSingleHandler(req: Request<GetSingleInsuranceInput['params']>, res: Response){
-    const insuranceId = req.params.insuranceId;
-    const insurance = await getSingle({insuranceId})
-    if (!insurance){
-        return res.sendStatus(404)
+    try { const insurance = await UserInsuranceModel.findById(req.params.insuranceId)
+        return res.status(200).json(insurance)
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
     }
-    return res.status(200).json(insurance)
 }
 export async function getAllHandler(req: Request, res: Response){
     try {
-        const insurances = await getAll();
+        const insurances = await UserInsuranceModel.find();
         return res.status(200).json(insurances)
     } catch (err: any) {
         res.status(401).json({message: err.message})
@@ -40,12 +41,11 @@ export async function getAllHandler(req: Request, res: Response){
     }
 }
 export async function putUpdateInsuranceHandler(req: Request<PutUpdateInsuranceInput['params']>, res: Response){
-    const insuranceId = req.params.insuranceId;
-    const insurance = await getSingle({insuranceId})
-    if (!insurance){
-        return res.sendStatus(404)
+    try { 
+        await UserInsuranceModel.findByIdAndUpdate(req.params.insuranceId, req.body)
+        res.send("Updated Insurance");
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
     }
-    const update = req.body
-    const updatedInsurance = await putUpdateInsurance({insuranceId}, update, {new: true})
-    return res.status(200).json(updatedInsurance)
 }

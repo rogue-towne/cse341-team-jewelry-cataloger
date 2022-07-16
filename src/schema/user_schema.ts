@@ -14,7 +14,9 @@ const payload = {
             required_error: "Email Address is required"
         }).email({ message: "Not a valid email"}),
 
-        phone_number: string()
+        phone_number: string({
+            required_error: "Email Address is required"
+        })
             .min(10, { message: "Must be 10 or more characters long"}),
         street_address: string(),
         city: string(),
