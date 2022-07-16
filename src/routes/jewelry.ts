@@ -1,13 +1,14 @@
 import express from 'express'
 const router = express.Router();
+import { requiresAuth } from 'express-openid-connect';
 import { deleteJewelryHandler, getAllHandler, getSingleHandler, postNewJewelryHandler, putUpdateJewelryHandler } from '../controllers/jewelry_controller';
 import validate from '../helper/validate';
 import { deleteJewelrySchema, getSingleSchema, postNewJewelrySchema, putUpdateJewelrySchema } from '../schema/jewelry_schema';
 
-router.post('/', validate(postNewJewelrySchema), postNewJewelryHandler);
-router.delete('/:jewelryId', validate(deleteJewelrySchema), deleteJewelryHandler);
-router.get('/:jewelryId', validate(getSingleSchema), getSingleHandler);
-router.get('/', getAllHandler);
-router.put('/:jewelryId', validate(putUpdateJewelrySchema), putUpdateJewelryHandler);
+router.post('/', requiresAuth(), validate(postNewJewelrySchema), postNewJewelryHandler);
+router.delete('/:jewelryId', requiresAuth(), validate(deleteJewelrySchema), deleteJewelryHandler);
+router.get('/:jewelryId', requiresAuth(), validate(getSingleSchema), getSingleHandler);
+router.get('/', requiresAuth(), getAllHandler);
+router.put('/:jewelryId', requiresAuth(), validate(putUpdateJewelrySchema), putUpdateJewelryHandler);
 
 export default router;
