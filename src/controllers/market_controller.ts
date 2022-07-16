@@ -1,11 +1,11 @@
 import {Request, Response} from 'express'
-import { GetSingleMarketInput, PostNewMarketInput, PutUpdateMarketInput } from '../schema/market_schema';
-import { deleteMarket, getAll, getSingle, postNewMarket, putUpdateMarket} from '../services/market_service'
+import MarketModel from '../models/market_model';
+import { DeleteMarketInput, GetSingleMarketInput, PostNewMarketInput, PutUpdateMarketInput } from '../schema/market_schema';
 
 
 export async function getAllHandler(req: Request, res: Response){
     try {
-        const market = await getAll();
+        const market = await MarketModel.find();
         return res.status(200).json(market)
     } catch (err: any) {
         res.status(401).json({message: err.message})
@@ -14,17 +14,17 @@ export async function getAllHandler(req: Request, res: Response){
     }
 }
 export async function getSingleHandler(req: Request<GetSingleMarketInput['params']>, res: Response){
-    const marketId = req.params.marketId;
-    const market = await getSingle({marketId})
-    if (!market){
-        return res.sendStatus(404)
+    try { const market = await MarketModel.findById(req.params.marketId)
+        return res.status(200).json(market)
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
     }
-    return res.status(200).json(market)
 }
 export async function postNewMarketHandler(req: Request<{}, {}, PostNewMarketInput['body']>, res: Response){
     try {
-        const market = await postNewMarket(req.body);
-        return res.status(200).json(market)
+        const market = await MarketModel.create(req.body);
+        return res.status(201).json(market)
     } catch (err: any) {
         res.status(401).json({message: err.message})
         res.status(503).json({message: err.message})
@@ -32,21 +32,21 @@ export async function postNewMarketHandler(req: Request<{}, {}, PostNewMarketInp
     }
 }
 export async function putUpdateMarketHandler(req: Request<PutUpdateMarketInput['params']>, res: Response){
-    const marketId = req.params.marketId;
-    const market = await getSingle({marketId})
-    if (!market){
-        return res.sendStatus(404)
+    try { 
+        await MarketModel.findByIdAndUpdate(req.params.marketId, req.body)
+        res.send("Updated Market Instance");
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
     }
-    const update = req.body
-    const updatedUser = await putUpdateMarket({marketId}, update, {new: true})
-    return res.status(200).json(updatedUser)
 }
-export async function deleteMarketHandler(req: Request<PutUpdateMarketInput['params']>, res: Response){
-    const marketId = req.params.marketId;
-    const market = await getSingle({marketId})
-    if (!market){
-        return res.sendStatus(404)
-    }
-    await deleteMarket({marketId});
-    return res.sendStatus(200)
+export async function deleteMarketHandler(req: Request<DeleteMarketInput['params']>, res: Response){
+    try { 
+        const market = await MarketModel.findById(req.params.marketId)
+        market?.deleteOne()
+        res.json('Deleted Market Instance')
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
+    };
 }

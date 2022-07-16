@@ -1,11 +1,11 @@
 import {Request, Response} from 'express'
-import { GetSingleJewelryInput, PostNewJewelryInput, PutUpdateJewelryInput } from '../schema/jewelry_schema';
-import { deleteJewelry, getAll, getSingle, postNewJewelry, putUpdateJewelry} from '../services/jewelry_service'
+import JewelryModel from '../models/jewelry_model';
+import { DeleteJewelryInput, GetSingleJewelryInput, PostNewJewelryInput, PutUpdateJewelryInput } from '../schema/jewelry_schema';
 
 
 export async function getAllHandler(req: Request, res: Response){
     try {
-        const jewelry = await getAll();
+        const jewelry = await JewelryModel.find();
         return res.status(200).json(jewelry)
     } catch (err: any) {
         res.status(401).json({message: err.message})
@@ -14,17 +14,17 @@ export async function getAllHandler(req: Request, res: Response){
     }
 }
 export async function getSingleHandler(req: Request<GetSingleJewelryInput['params']>, res: Response){
-    const jewelryId = req.params.jewelryId;
-    const jewelry = await getSingle({jewelryId})
-    if (!jewelry){
-        return res.sendStatus(404)
+    try { const jewelry = await JewelryModel.findById(req.params.jewelryId)
+        return res.status(200).json(jewelry)
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
     }
-    return res.status(200).json(jewelry)
 }
 export async function postNewJewelryHandler(req: Request<{}, {}, PostNewJewelryInput['body']>, res: Response){
     try {
-        const jewelry = await postNewJewelry(req.body);
-        return res.status(200).json(jewelry)
+        const jewelry = await JewelryModel.create(req.body);
+        return res.status(201).json(jewelry)
     } catch (err: any) {
         res.status(401).json({message: err.message})
         res.status(503).json({message: err.message})
@@ -32,21 +32,21 @@ export async function postNewJewelryHandler(req: Request<{}, {}, PostNewJewelryI
     }
 }
 export async function putUpdateJewelryHandler(req: Request<PutUpdateJewelryInput['params']>, res: Response){
-    const jewelryId = req.params.jewelryId;
-    const jewelry = await getSingle({jewelryId})
-    if (!jewelry){
-        return res.sendStatus(404)
+    try { 
+        await JewelryModel.findByIdAndUpdate(req.params.jewelryId, req.body)
+        res.send("Updated Jewelry item");
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
     }
-    const update = req.body
-    const updatedUser = await putUpdateJewelry({jewelryId}, update, {new: true})
-    return res.status(200).json(updatedUser)
 }
-export async function deleteJewelryHandler(req: Request<PutUpdateJewelryInput['params']>, res: Response){
-    const jewelryId = req.params.jewelryId;
-    const jewelry = await getSingle({jewelryId})
-    if (!jewelry){
-        return res.sendStatus(404)
-    }
-    await deleteJewelry({jewelryId});
-    return res.sendStatus(200)
+export async function deleteJewelryHandler(req: Request<DeleteJewelryInput['params']>, res: Response){
+    try { 
+        const jewelry = await JewelryModel.findById(req.params.jewelryId)
+        jewelry?.deleteOne()
+        res.json('Deleted Jewelry item')
+    } catch {
+        res.status(400).json("Invalid ID")
+        res.status(500).json("Internal Server Error")
+    };
 }
