@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DarrinFry/cse341-team-jewelry-cataloger.git"
+    "url": "git+https://github.com/rogue-towne/cse341-team-jewelry-cataloger.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DarrinFry/cse341-team-jewelry-cataloger/issues"
+    "url": "https://github.com/rogue-towne/cse341-team-jewelry-cataloger.git/issues"
   },
   "homepage": "https://github.com/DarrinFry/cse341-team-jewelry-cataloger#readme",
   "dependencies": {
