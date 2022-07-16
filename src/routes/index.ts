@@ -1,13 +1,14 @@
-import { Request, Response} from 'express'
+import express from 'express'
+import userRouter from './user'
+import insuranceRouter from './insurance'
+import jewelryRouter from './jewelry'
+import marketRouter from './market'
 
-const routes = require('express').Router();
+const routes = express.Router();
 
-// Landing page for guests
-routes.get('/', ( req: Request,  res: Response) => {
-	res.render('index', {
-		title: 'Welcome to Jewelry Cataloger',
-		//   isAuthenticated: req.oidc.isAuthenticated(),
-	});
-});
+routes.use('/user', userRouter)
+routes.use('/insurance', insuranceRouter)
+routes.use('/jewelry', jewelryRouter)
+routes.use('/market', marketRouter)
 
 export default routes;

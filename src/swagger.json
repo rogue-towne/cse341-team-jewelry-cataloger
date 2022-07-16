@@ -1,0 +1,847 @@
+{
+  "openapi": "3.0.0",
+"info": {
+    "title": "CSE341 Team Project -- Jewelery Cataloger",
+    "version": "1.0.0",
+    "description": "A program for cataloging jewelry items for insurance purposes ---- <button><a href='http://localhost:8080/logout'>LOGOUT</a></button> ---- "
+  },
+  "servers": [
+    {
+        "url": "http://localhost:8080",
+        "description": "Development server"
+    },
+    {
+      "url": "https://cse-341-team-jewelry-cataloger.herokuapp.com",
+      "description": "Host server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "user",
+      "description": "User data and information"
+    },
+    {
+      "name": "market",
+      "description": "Price and information for metal and stones."
+    },
+    {
+      "name": "jewelry",
+      "description": "Description and details about the jewelry item."
+    },
+    {
+      "name": "insurance",
+      "description": "Insurance company and policy information."
+    }
+  ],
+  "components": {
+    "schemas": {
+      "PostNewInsuranceInput":{
+        "type": "object",
+        "required": [
+          "insurance_company",
+          "insurance_policy"
+        ],
+        "properties": {
+          "insurance_company":{
+            "type": "string",
+            "default": "Geico"
+          },
+          "insurance_agent":{
+            "type": "string",
+            "default": "Steve"
+          },
+          "insurance_policy":{
+            "type": "string",
+            "default": "8942-754245"
+          }
+
+        }
+      },
+      "PostNewJewelryInput":{
+        "type": "object",
+        "properties": {
+          "finger_size":{
+            "type": "number",
+            "default": 6.5
+          },
+          "metal_weight_grams":{
+            "type": "number",
+            "default": 5.5
+          },
+          "number_of_stones_1":{
+            "type": "number",
+            "default": 100
+          },
+          "number_of_stones_2":{
+            "type": "number",
+            "default": 100
+          },
+          "number_of_stones_3":{
+            "type": "number",
+            "default": 100
+          },
+          "cttw_stones_1":{
+            "type": "number",
+            "default": 0.5
+          },
+          "cttw_stones_2":{
+            "type": "number",
+            "default": 0.5
+          },
+          "cttw_stones_3":{
+            "type": "number",
+            "default": 0.5
+          },
+          "price_stones_1":{
+            "type": "number",
+            "default": 1234.56
+          },
+          "price_stones_2":{
+            "type": "number",
+            "default": 1234.56
+          },
+          "price_stones_3":{
+            "type": "number",
+            "default": 1234.56
+          },
+          "labor_1":{
+            "type": "number",
+            "default": 500
+          },
+          "labor_2":{
+            "type": "number",
+            "default": 500
+          },
+          "labor_3":{
+            "type": "number",
+            "default": 500
+          },
+          "item_condition":{
+            "type": "string",
+            "default": "Like New"
+          },
+          "appraisal_note":{
+            "type": "string",
+            "default": "Stuff that an appraiser might say about the item"
+          },
+          "item_description":{
+            "type": "string",
+            "default": "Long description of the jewelry item"
+          }
+        }
+      },
+      "PostNewMarketInput":{
+        "type": "object",
+        "properties": {
+          "metal_name":{
+            "type": "string",
+            "default": "gold"
+          },
+          "metal_karatage":{
+            "type": "number",
+            "default": 0.750
+          },
+          "metal_price":{
+            "type": "number",
+            "default": 1234.56
+          },
+          "diamond_price_per_carat":{
+            "type": "number",
+            "default": 1234.56
+          },
+          "gemstone_price_per_carat":{
+            "type": "number",
+            "default": 1234.56
+          },
+          "labor_total":{
+            "type": "number",
+            "default": 1234
+          },
+          "retail_modifier":{
+            "type": "number",
+            "default": 2.5
+          }
+        }
+      },
+      "PostNewUserInput":{
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "email_address",
+          "phone_number"
+        ],
+        "properties": {
+          "first_name":{
+            "type": "string",
+            "default": "Bilbo"
+          },
+          "last_name":{
+            "type": "string",
+            "default": "Baggins"
+          },
+          "email_address":{
+            "type": "string",
+            "default": "bbaggins@gmail.com"
+          },
+          "phone_number":{
+            "type": "string",
+            "default": "(463)-375-3853"
+          },
+          "street_address":{
+            "type": "string",
+            "default": "3 Bagshot Row"
+          },
+          "city":{
+            "type": "string",
+            "default": "Hobbiton"
+          },
+          "state":{
+            "type": "string",
+            "default": "Iowa"
+          },
+          "zipcode":{
+            "type": "string",
+            "default": "48765"
+          }
+
+        }
+      }
+    }
+  },
+  "paths": {
+    "/user/": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "description": "Get all users from the database",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "description": "Create a new user",
+        "requestBody":{
+          "required": true,
+          "content": {"application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostNewUserInput"
+            }
+        }}},
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "description": "Get a single user instance based on the ID",
+        "parameters": 
+        [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }, 
+            "required": true,
+            "description": "The user id"
+          }
+        ]
+        ,
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "description": "Update a user",
+        "requestBody":{
+          "required": true,
+          "content": {"application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostNewUserInput"
+            }
+        }}},
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "description": "Delete a user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The user id"
+          }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/market/": {
+      "get": {
+        "tags": [
+          "market"
+        ],
+        "description": "Get all market instances in the database",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "market"
+        ],
+        "description": "Create a new market instance",
+        "requestBody":{
+          "required": true,
+          "content": {"application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostNewMarketInput"
+            }
+        }}},
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/market/{id}": {
+      "get": {
+        "tags": [
+          "market"
+        ],
+        "description": "Get a single market instance based on the ID",
+        "parameters": 
+        [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }, 
+            "required": true,
+            "description": "The market id"
+          }
+        ]
+        ,
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "market"
+        ],
+        "description": "Update a market instance",
+        "requestBody":{
+          "required": true,
+          "content": {"application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostNewMarketInput"
+            }
+        }}},
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The market id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "market"
+        ],
+        "description": "Delete a market instance",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The market id"
+          }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/jewelry/": {
+      "get": {
+        "tags": [
+          "jewelry"
+        ],
+        "description": "Get all jewelry items in the database",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "jewelry"
+        ],
+        "description": "Create a new jewelry item instance",
+        "requestBody":{
+          "required": true,
+          "content": {"application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostNewJewelryInput"
+            }
+        }}},
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/jewelry/{id}": {
+      "get": {
+        "tags": [
+          "jewelry"
+        ],
+        "description": "Get a single jewelry item instance based on the id",
+        "parameters": 
+        [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }, 
+            "required": true,
+            "description": "The jewelry id"
+          }
+        ]
+        ,
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "jewelry"
+        ],
+        "description": "Update a jewelry item instance",
+        "requestBody":{
+          "required": true,
+          "content": {"application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostNewJewelryInput"
+            }
+        }}},
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The jewelry id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "jewelry"
+        ],
+        "description": "Delete a jewelry item instance",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The jewelry id"
+          }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/insurance/": {
+      "get": {
+        "tags": [
+          "insurance"
+        ],
+        "description": "Get all insurance instances in the database",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "insurance"
+        ],
+        "description": "Create a new insurance instance",
+        "requestBody":{
+          "required": true,
+          "content": {"application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostNewInsuranceInput"
+            }
+        }}},
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/insurance/{id}": {
+      "get": {
+        "tags": [
+          "insurance"
+        ],
+        "description": "Get a single insurance instance based on the ID",
+        "parameters": 
+        [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }, 
+            "required": true,
+            "description": "The user id"
+          }
+        ]
+        ,
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "insurance"
+        ],
+        "description": "Update an insurance instance",
+        "requestBody":{
+          "required": true,
+          "content": {"application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostNewInsuranceInput"
+            }
+        }}},
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The insurance id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "insurance"
+        ],
+        "description": "Delete an insurance instance",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The insurance id"
+          }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    }
+  }
+}
