@@ -1,4 +1,4 @@
-import express, { Request, Response} from 'express'
+import express from 'express'
 import userRouter from './user'
 import insuranceRouter from './insurance'
 import jewelryRouter from './jewelry'
