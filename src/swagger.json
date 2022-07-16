@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://jewelry-cataloger.herokuapp.com/",
+      "url": "https://jewelry-cataloger.herokuapp.com",
       "description": "Host server"
     },
     {

@@ -64,7 +64,7 @@ app
 // req.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
   if (req.oidc.isAuthenticated()) {
-    res.redirect('https://jewelry-cataloger.herokuapp/api-docs')
+    res.redirect('https://jewelry-cataloger.herokuapp.com/api-docs')
   } else {
     res.render('index', {
       title: 'Welcome to Jewelry Cataloger'
