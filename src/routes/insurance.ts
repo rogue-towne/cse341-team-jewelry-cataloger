@@ -1,9 +1,9 @@
-import express from 'express'
 import { requiresAuth } from 'express-openid-connect';
-const router = express.Router();
 import { deleteInsuranceHandler, getAllHandler, getSingleHandler, postNewInsuranceHandler, putUpdateInsuranceHandler } from '../controllers/insurance_controller';
 import validate from '../helper/validate';
 import { deleteInsuranceSchema, getSingleSchema, postNewInsuranceSchema, putUpdateInsuranceSchema } from '../schema/insurance_schema';
+import express from 'express'
+const router = express.Router();
 
 router.post('/',  requiresAuth(), validate(postNewInsuranceSchema), postNewInsuranceHandler);
 router.delete('/:insuranceId', requiresAuth(), validate(deleteInsuranceSchema), deleteInsuranceHandler);

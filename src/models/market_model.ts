@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+//The typescript definition for this schema:
 export interface MarketDocument extends mongoose.Document{
     metal_name: string,
     metal_karatage: number,

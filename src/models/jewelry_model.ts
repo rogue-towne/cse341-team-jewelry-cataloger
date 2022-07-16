@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-
+//The typescript definition for this schema:
 export interface JewelryDocument extends mongoose.Document{
     finger_size: number,
     metal_weight_grams: number,
