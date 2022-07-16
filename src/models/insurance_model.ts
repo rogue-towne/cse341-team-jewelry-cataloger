@@ -20,7 +20,7 @@ const User_Insurance_Schema = new mongoose.Schema({
         type: String,
         required: true,
       },
-    }, {collection : 'Insurance_Data'})
+    }, {collection : 'user_information_infos'})
 
 const UserInsuranceModel = mongoose.model<UserInsuranceDocument>('user_insurance_data', User_Insurance_Schema);
 export default UserInsuranceModel;

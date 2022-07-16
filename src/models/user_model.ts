@@ -51,7 +51,7 @@ const User_Data_Schema = new mongoose.Schema({
 		type: String,
 		required: false
 	}
-}, {collection : 'User_Data'})
+}, {collection : 'user_datas'})
 
 const UserDataModel = mongoose.model<UserDocument>('user_data', User_Data_Schema);
 export default UserDataModel;
