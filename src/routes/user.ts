@@ -1,15 +1,14 @@
 import express from 'express'
 const router = express.Router();
+import { requiresAuth } from 'express-openid-connect';
 import { deleteUserHandler, getAllHandler, getSingleHandler, postNewUserHandler, putUpdateUserHandler } from '../controllers/user_controller';
 import validate from '../helper/validate';
 import { deleteUserSchema, getSingleSchema, postNewUserSchema, putUpdateUserSchema } from '../schema/user_schema';
 
-
-
-router.post('/', validate(postNewUserSchema), postNewUserHandler);
-router.delete('/:userId', validate(deleteUserSchema), deleteUserHandler);
-router.get('/:userId', validate(getSingleSchema), getSingleHandler);
-router.get('/', getAllHandler);
-router.put('/:userId', validate(putUpdateUserSchema), putUpdateUserHandler);
+router.post('/', requiresAuth(), validate(postNewUserSchema), postNewUserHandler);
+router.delete('/:userId', requiresAuth(), validate(deleteUserSchema), deleteUserHandler);
+router.get('/:userId', requiresAuth(), validate(getSingleSchema), getSingleHandler);
+router.get('/', requiresAuth(), getAllHandler);
+router.put('/:userId', requiresAuth(), validate(putUpdateUserSchema), putUpdateUserHandler);
 
 export default router;
